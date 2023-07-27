@@ -2,7 +2,7 @@ const { ModuleFederationPlugin } = require('webpack').container;
 
 const webpackConfigPath = 'react-scripts/config/webpack.config';
 // eslint-disable-next-line import/no-dynamic-require
-const webpackConfig = require(webpackConfigPath);
+const webpackDev = require(webpackConfigPath);
 
 const override = config => {
   // eslint-disable-next-line global-require
@@ -21,7 +21,7 @@ const override = config => {
   return config;
 };
 
-require.cache[require.resolve(webpackConfigPath)].exports = env => override(webpackConfig(env));
+require.cache[require.resolve(webpackConfigPath)].exports = env => override(webpackDev(env));
 
 // eslint-disable-next-line import/no-dynamic-require
 module.exports = require(webpackConfigPath);
