@@ -1,0 +1,54 @@
+{
+  "name": "@devegateway/create-mfe-app",
+  "version": "1.0.0",
+  "description": "A CLI for creating micro frontends with React",
+  "keywords": [
+    "microfrontends",
+    "cra",
+    "react",
+    "module federation",
+    "create-react-app"
+  ],
+  "scripts": {
+    "dev": "ts-node ./index.ts",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
+  },
+  "bin": {
+    "cra-microfrontends": "./dist/index.js"
+  },
+  "author": "Timothy Mugo<tmugo@developmentgateway.org>",
+  "license": "GPL-3.0 license",
+  "dependencies": {
+    "@types/cross-spawn": "^6.0.2",
+    "@types/ejs": "^3.1.2",
+    "@types/mem-fs": "^1.1.2",
+    "@types/node": "^16.18.39",
+    "@types/prompts": "^2.4.4",
+    "@types/validate-npm-package-name": "^4.0.0",
+    "chalk": "4.1.2",
+    "commander": "^11.0.0",
+    "conf": "^10.2.0",
+    "cpy": "^8.1.2",
+    "cross-spawn": "^7.0.3",
+    "ejs": "^3.1.9",
+    "mem-fs": "^2.3.0",
+    "mem-fs-editor": "^9.7.0",
+    "prompts": "^2.4.2",
+    "typescript": "^5.1.6",
+    "validate-npm-package-name": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/mem-fs-editor": "^7.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "@vercel/ncc": "^0.36.1",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-standard": "^17.1.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  },
+  "engines": {
+    "node": ">=16.8.0"
+  }
+}
