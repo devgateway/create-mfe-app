@@ -4,10 +4,10 @@ import prompts from 'prompts';
 import path from 'path';
 import fs from 'fs';
 import packageJson from './package.json';
-import { validateNpmName } from './utils/validate-pkg';
-import { generateRandomPort } from './utils/random-port';
-import { getObjectValue } from './utils/get-values';
-import { createApp } from './app';
+import {validateNpmName} from './utils/validate-pkg';
+import {generateRandomPort} from './utils/random-port';
+import {getObjectValue} from './utils/get-values';
+import {createApp} from './app';
 
 let projectPath: string = '';
 
@@ -36,8 +36,7 @@ const program = new Commander.Command(packageJson.name)
     .option('--ts --typescript', 'Initialize with TypeScript')
     .option('-t --app-type <type>', 'Application type (default: host)')
     .option('-p, --port <number>', 'Port number', generateRandomPort())
-    .option('--pf --packages-folder <folder>', 'The folder that contains the MFEs(default: packages)')
-    .option('--public-path <path>', 'The public path for the MFEs (default: /)')
+    .option('--react-router', 'Add React Router')
     .option('-h, --help', 'Display this message')
     .parse(process.argv);
 
@@ -85,7 +84,10 @@ const runApp = async (): Promise<void> => {
     const resolvedProjectPath = path.resolve(projectPath);
     const projectName = path.basename(resolvedProjectPath);
 
-    const { valid, problems } = validateNpmName(projectName);
+    const {
+        valid,
+        problems
+    } = validateNpmName(projectName);
     if (!valid) {
         console.error(
             `Could not create a project called ${chalk.red(
@@ -117,8 +119,14 @@ const runApp = async (): Promise<void> => {
             name: 'language',
             message: 'What language would you like to use?',
             choices: [
-                { title: 'JavaScript', value: 'js' },
-                { title: 'TypeScript', value: 'ts' }
+                {
+                    title: 'JavaScript',
+                    value: 'js'
+                },
+                {
+                    title: 'TypeScript',
+                    value: 'ts'
+                }
             ],
             initial: 0
         }, {
@@ -152,8 +160,14 @@ const runApp = async (): Promise<void> => {
             name: 'appType',
             message: 'What type of application would you like to create?',
             choices: [
-                { title: 'Host', value: 'host' },
-                { title: 'Remote', value: 'remote' }
+                {
+                    title: 'Host',
+                    value: 'host'
+                },
+                {
+                    title: 'Remote',
+                    value: 'remote'
+                }
             ],
             initial: 0
         }, {
@@ -188,18 +202,16 @@ const runApp = async (): Promise<void> => {
         program.opts().port = res.port;
     }
 
-    /**
-     * Set public path
-     * */
-    const selectedPublicPath = getProgramValues<string | undefined>('publicPath');
+    // set react router
+    const selectedReactRouter = getProgramValues<boolean | undefined>('reactRouter');
 
-    if (!selectedPublicPath) {
+    if (!selectedReactRouter) {
         const res = await prompts({
             onState: onPromptState,
-            type: 'text',
-            name: 'publicPath',
-            message: 'What public path would you like to use?',
-            initial: '/'
+            type: 'confirm',
+            name: 'reactRouter',
+            message: 'Would you like to add React Router?',
+            initial: true
         }, {
             onCancel: () => {
                 console.error(chalk.red('Exiting the program...'));
@@ -207,30 +219,7 @@ const runApp = async (): Promise<void> => {
             }
         });
 
-        program.opts().publicPath = res.publicPath;
-    }
-
-    /**
-     * Set packages folder
-     * */
-    // TODO: Add validation for the folder name and also in the app
-    const selectedPackagesFolder = getProgramValues<string | undefined>('packagesFolder');
-
-    if (!selectedPackagesFolder) {
-        const res = await prompts({
-            onState: onPromptState,
-            type: 'text',
-            name: 'packagesFolder',
-            message: 'What is the name of the folder that contains the MFEs?',
-            initial: 'packages'
-        }, {
-            onCancel: () => {
-                console.error(chalk.red('Exiting the program...'));
-                process.exit(1);
-            }
-        });
-
-        program.opts().packagesFolder = res.packagesFolder;
+        program.opts().reactRouter = res.reactRouter;
     }
 
     try {

@@ -25,42 +25,6 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
     const templateDir = path.join(__dirname, template);
 
     /**
-     * Create the module federation config file and write content.
-     * Push it to the copySrc array.
-     * */
-    const moduleFederationConfigFileName = path.join(root, 'module-federation.config.js');
-
-    let mfFileContent = '';
-    if (appType === AppType.Remote) {
-        mfFileContent = moduleFederationRemote({ appName });
-        fs.writeFileSync(moduleFederationConfigFileName, mfFileContent);
-        copySrc.push('module-federation.config.js');
-    } else {
-        mfFileContent = moduleFederationHost({ appName });
-        fs.writeFileSync(moduleFederationConfigFileName, mfFileContent);
-        copySrc.push('module-federation.config.js');
-    }
-
-    /**
-     * Create start.js and write content.
-     * Push it to the copySrc array where it should be in the /scripts folder.
-     * */
-    const startFileName = path.join(root, 'scripts/start.js');
-    fs.mkdirSync(path.join(root, 'scripts'), { recursive: true });
-    const startFileContent = startScript({ port: port || 3000 });
-    fs.writeFileSync(startFileName, startFileContent);
-    copySrc.push('scripts/start.js');
-
-    /**
-     * Create the webpack production config file and write content.
-     * */
-    const webpackProductionConfigFileName = path.join(root, 'scripts/overrides/webpack.prod.js');
-    fs.mkdirSync(path.join(root, 'scripts/overrides'), { recursive: true });
-    const webpackProductionConfigFileContent = webpackProductionConfig({ publicPath });
-    fs.writeFileSync(webpackProductionConfigFileName, webpackProductionConfigFileContent);
-    copySrc.push('scripts/overrides/webpack.prod.js');
-
-    /**
      * Copy the template files from template to the target directory.
      */
     console.log('\nInitializing project with template:', template, '\n');
