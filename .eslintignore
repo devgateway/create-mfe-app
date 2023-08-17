@@ -1,3 +1,5 @@
 node_modules/
 templates/js-remote
 templates/ts-remote/
+templates/ts-host/
+templates/js-host/

@@ -6,8 +6,7 @@ export const getObjectValue = <T, X>(object: T, key: X) => {
 
         if (foundKey) {
             return foundKey;
-        } else {
-            return null;
         }
+        return null;
     }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@devegateway/create-mfe-app",
+  "name": "bootstrap-mfe-app",
   "version": "1.0.0",
   "description": "A CLI for creating micro frontends with React",
   "keywords": [
@@ -15,7 +15,7 @@
     "start": "node ./dist/index.js"
   },
   "bin": {
-    "cra-microfrontends": "./dist/index.js"
+    "bootstrap-mfe-app": "./dist/index.js"
   },
   "author": "Timothy Mugo<tmugo@developmentgateway.org>",
   "license": "GPL-3.0 license",

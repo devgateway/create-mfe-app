@@ -1,4 +1,5 @@
 const { ModuleFederationPlugin } = require('webpack').container;
+const packageJson = require('../../package.json');
 
 const webpackConfigPath = 'react-scripts/config/webpack.config';
 // eslint-disable-next-line import/no-dynamic-require
@@ -6,7 +7,33 @@ const webpackDev = require(webpackConfigPath);
 
 const override = config => {
   // eslint-disable-next-line global-require
-  config.plugins.push(new ModuleFederationPlugin(require('../../module-federation.config')));
+  const moduleFederationPlugin = new ModuleFederationPlugin({
+    name: 'newapp',
+    filename: 'remoteEntry.js',
+    exposes: {
+      './NewMfeApp': './src/bootstrap',
+    },
+    shared: {
+        ...packageJson.dependencies,
+        react: {
+            singleton: true,
+            requiredVersion: packageJson.dependencies.react,
+        },
+        'react-dom': {
+            singleton: true,
+            requiredVersion: packageJson.dependencies['react-dom'],
+        }
+    }
+  })
+
+  config.plugins.push(moduleFederationPlugin);
+
+  config.output.publicPath = 'http://localhost:3001/';
+
+    config.devServer = {
+        ...config.devServer,
+        historyApiFallback: true,
+    }
 
   config.module.rules = [
     ...config.module.rules,
