@@ -10,5 +10,5 @@
     "outDir": "dist",
     "removeComments": true
   },
-  "exclude": ["templates", "dist"]
+  "exclude": ["/templates/**/*", "dist"]
 }

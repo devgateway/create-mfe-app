@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import { isWriteable } from './utils/writeable';
 import { AppType, Language } from './types';
-import { installTemplate } from './templates/installTemplate';
+import { installTemplate } from './installTemplate';
 
 interface Config {
     appPath: string;
@@ -11,29 +11,19 @@ interface Config {
     language?: string;
     appType?: 'host' | 'remote';
     publicPath?: string;
+    reactRouter?: boolean;
+    createReactApp?: boolean;
 }
 
 export const createApp = async (config: Config) => {
     const {
-        appPath, language, appType, publicPath, port
+        appPath, language, appType, publicPath, port, createReactApp, reactRouter
     } = config;
 
-    let template = 'js-remote';
+    let template = `${createReactApp ? 'cra' : 'webpack'}-${language || Language.JavaScript}-${appType || AppType.Remote}`;
 
-    if (language === Language.TypeScript) {
-        if (appType === AppType.Remote) {
-            template = 'ts-remote';
-        } else {
-            template = 'ts-host';
-        }
-    }
-
-    if (language === Language.JavaScript) {
-        if (appType === AppType.Remote) {
-            template = 'js-remote';
-        } else {
-            template = 'js-host';
-        }
+    if (reactRouter) {
+        template += '-router';
     }
 
     const root = path.resolve(appPath);

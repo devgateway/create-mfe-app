@@ -4,10 +4,10 @@ import prompts from 'prompts';
 import path from 'path';
 import fs from 'fs';
 import packageJson from './package.json';
-import {validateNpmName} from './utils/validate-pkg';
-import {generateRandomPort} from './utils/random-port';
-import {getObjectValue} from './utils/get-values';
-import {createApp} from './app';
+import {validateNpmName} from './src/utils/validate-pkg';
+import {generateRandomPort} from './src/utils/random-port';
+import {getObjectValue} from './src/utils/get-values';
+import {createApp} from './src/app';
 
 let projectPath: string = '';
 
@@ -32,6 +32,7 @@ const program = new Commander.Command(packageJson.name)
         projectPath = name;
     })
     .option('-n, --name <name>', 'Project name')
+    .option('--use-cra', 'Use create-react-app')
     .option('--js --javascript', 'Initialize with JavaScript (default)')
     .option('--ts --typescript', 'Initialize with TypeScript')
     .option('-t --app-type <type>', 'Application type (default: host)')
@@ -104,6 +105,26 @@ const runApp = async (): Promise<void> => {
 
     if (folderExists) {
         process.exit(1);
+    }
+
+    // select whether to use create-react-app
+    const selectedCra = getProgramValues<boolean | undefined>('useCra');
+
+    if (!selectedCra) {
+        const res = await prompts({
+            onState: onPromptState,
+            type: 'confirm',
+            name: 'useCra',
+            message: 'Would you like to use create-react-app?',
+            initial: true
+        }, {
+            onCancel: () => {
+                console.error(chalk.red('Exiting the program...'));
+                process.exit(1);
+            }
+        });
+
+        program.opts().useCra = res.useCra;
     }
 
     /**
@@ -228,7 +249,9 @@ const runApp = async (): Promise<void> => {
             port: program.opts().port,
             language: program.opts().javascript ? 'js' : 'ts',
             appType: program.opts().appType,
-            publicPath: program.opts().publicPath
+            publicPath: program.opts().publicPath,
+            reactRouter: program.opts().reactRouter,
+            createReactApp: program.opts().useCra
         });
     } catch (err) {
         console.log(err);

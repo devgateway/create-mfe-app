@@ -2,9 +2,8 @@ import cpy from 'cpy';
 import fs from 'fs';
 import path from 'path';
 import spawn from 'cross-spawn';
-import { AppType, Language } from '../types';
-import { installDependencies } from '../utils/install';
-import { moduleFederationHost, moduleFederationRemote, startScript, webpackProductionConfig } from './files';
+import { AppType, Language } from './types';
+import { installDependencies } from './utils/install';
 
 interface InstallTemplateOptions {
     template: string;
@@ -22,7 +21,7 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
     } = options;
 
     const copySrc = ['**'];
-    const templateDir = path.join(__dirname, template);
+    const templateDir = path.join(__dirname, '../templates', template);
 
     /**
      * Copy the template files from template to the target directory.
