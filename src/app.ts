@@ -53,7 +53,8 @@ export const createApp = async (config: Config) => {
         appName: path.basename(root),
         publicPath: publicPath || '/',
         appType: appType || AppType.Remote,
-        port: port || 3000
+        port: port || 3000,
+        useReactRouter: reactRouter || false
     }).then(() => {
         const displayedCommand = 'npm';
 

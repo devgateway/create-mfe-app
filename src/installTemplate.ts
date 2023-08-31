@@ -13,11 +13,12 @@ interface InstallTemplateOptions {
     publicPath?: string;
     appType?: string;
     port?: number;
+    useReactRouter?: boolean;
 }
 
 export const installTemplate = async (options: InstallTemplateOptions) => {
     const {
-        template, root, language, appName, publicPath, appType, port
+        template, root, language, appName, publicPath, appType, port, useReactRouter
     } = options;
 
     const copySrc = ['**'];
@@ -93,6 +94,14 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         ];
 
         dependencies.push(...tsDependencies);
+    }
+
+    if (useReactRouter) {
+        const routerDependencies = [
+            'react-router-dom'
+        ];
+
+        dependencies.push(...routerDependencies);
     }
 
     await installDependencies({ root, dependencies })

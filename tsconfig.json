@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": false,
     "outDir": "dist",
-    "removeComments": true
+    "removeComments": false
   },
   "exclude": ["/templates/**/*", "dist"]
 }

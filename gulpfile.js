@@ -4,14 +4,14 @@ const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 
 const projectDir = __dirname;
-const tsconfigPath = path.join(projectDir, 'tools/gulp/tsconfig.json');
-const tsProject = ts.createProject('tsconfig.json', { declaration: true, declarationFiles: true });
+const tsconfigPath = path.join(projectDir, './tools/gulp/tsconfig.json');
+const tsProject = ts.createProject('tsconfig.json');
 
-gulp.task('config-scripts', () => {
+gulp.task('build-app', () => {
     const tscResult = gulp.src(['index.ts']).pipe(tsProject());
     return tscResult.js
         .pipe(sourcemaps.init())
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('dist'));
 });
 
 require('ts-node').register({
