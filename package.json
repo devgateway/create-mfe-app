@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-mfe-app",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A CLI for creating micro frontends with React",
   "keywords": [
     "microfrontends",
