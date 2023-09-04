@@ -21,7 +21,7 @@
     "dev": "ts-node ./index.ts",
     "build": "gulp copy-templates && gulp build && gulp build-app",
     "start": "node ./dist/index.js",
-    "publish": "npm version patch && npm run build && npm publish --access public"
+    "publish:package": "npm version patch && npm run build && npm publish --access public"
   },
   "bin": {
     "bootstrap-mfe-app": "./dist/index.js"
