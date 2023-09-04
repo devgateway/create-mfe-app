@@ -97,26 +97,9 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         'web-vitals'
     ];
 
-    const devDependencies = [
+    const devDependenciesArray = [
         '@babel/plugin-proposal-private-property-in-object'
     ];
-
-    if (language === Language.JavaScript) {
-        const jsDependencies = [
-            'eslint',
-            'eslint-config-standard',
-            'eslint-plugin-n',
-            'eslint-plugin-promise',
-            'eslint-plugin-import',
-            'eslint-plugin-jsx-a11y',
-            'eslint-plugin-react',
-            'eslint-plugin-react-hooks',
-            'eslint-config-airbnb',
-            'babel-eslint'
-        ];
-
-        devDependencies.push(...jsDependencies);
-    }
 
     if (language === Language.TypeScript) {
         const tsDependencies = [
@@ -124,23 +107,10 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
             '@types/node',
             '@types/react',
             '@types/react-dom',
-            'typescript',
-            'eslint',
-            'eslint-config-airbnb',
-            'eslint-config-standard',
-            'eslint-config-standard-with-typescript',
-            'eslint-plugin-import',
-            'eslint-plugin-jsx-a11y',
-            'eslint-plugin-react',
-            'eslint-plugin-react-hooks',
-            'eslint-config-airbnb-typescript',
-            '@typescript-eslint/eslint-plugin',
-            '@typescript-eslint/parser',
-            'eslint-plugin-n',
-            'eslint-plugin-promise'
+            'typescript'
         ];
 
-        devDependencies.push(...tsDependencies);
+        devDependenciesArray.push(...tsDependencies);
     }
 
     if (useReactRouter) {
@@ -151,25 +121,13 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         dependencies.push(...routerDependencies);
     }
 
-    await installDependencies({ root, dependencies, devDependencies })
+    await installDependencies({ root, dependencies})
         .then(() => {
             console.log('\n✅ Dependencies installed');
-            // lint the project
+        });
 
-            const lint = spawn.sync(
-                'npm',
-                ['run', 'lint:fix'],
-                { stdio: 'inherit' }
-            );
-
-            if (lint.status !== 0) {
-                spawn.sync(
-                    'npm',
-                    ['init', '@eslint/config', '--yes'],
-                    { stdio: 'inherit' }
-                );
-            }
-
-            console.log('\n✅ Linting complete');
+    await installDependencies({ root, dependencies: devDependenciesArray, devDependencies: true })
+        .then(() => {
+            console.log('\n✅ Dev dependencies installed');
         });
 };

@@ -16,9 +16,6 @@
       "tsconfig.json"
     ]
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
   "rules": {
     "max-len": [
       "error",
