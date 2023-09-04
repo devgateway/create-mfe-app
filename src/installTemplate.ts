@@ -105,6 +105,8 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         const jsDependencies = [
             'eslint',
             'eslint-config-standard',
+            'eslint-plugin-n',
+            'eslint-plugin-promise',
             'eslint-plugin-import',
             'eslint-plugin-jsx-a11y',
             'eslint-plugin-react',
@@ -126,13 +128,16 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
             'eslint',
             'eslint-config-airbnb',
             'eslint-config-standard',
+            'eslint-config-standard-with-typescript',
             'eslint-plugin-import',
             'eslint-plugin-jsx-a11y',
             'eslint-plugin-react',
             'eslint-plugin-react-hooks',
             'eslint-config-airbnb-typescript',
             '@typescript-eslint/eslint-plugin',
-            '@typescript-eslint/parser'
+            '@typescript-eslint/parser',
+            'eslint-plugin-n',
+            'eslint-plugin-promise'
         ];
 
         devDependencies.push(...tsDependencies);
