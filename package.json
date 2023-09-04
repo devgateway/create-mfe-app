@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-mfe-app",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A CLI for creating micro frontends with React",
   "keywords": [
     "microfrontends",
@@ -9,6 +9,14 @@
     "module federation",
     "create-react-app"
   ],
+  "homepage": "https://github.com/devgateway/create-mfe-app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devgateway/create-mfe-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devgateway/create-mfe-app/issues"
+  },
   "scripts": {
     "dev": "ts-node ./index.ts",
     "build": "gulp copy-templates && gulp build && gulp build-app",
@@ -21,7 +29,6 @@
   "license": "GPL-3.0 license",
   "dependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/ejs": "^3.1.2",
     "@types/mem-fs": "^1.1.2",
     "@types/node": "^16.18.39",
     "@types/prompts": "^2.4.4",
@@ -31,7 +38,6 @@
     "conf": "^10.2.0",
     "cpy": "^8.1.2",
     "cross-spawn": "^7.0.3",
-    "ejs": "^3.1.9",
     "mem-fs": "^2.3.0",
     "mem-fs-editor": "^9.7.0",
     "prompts": "^2.4.2",
@@ -45,6 +51,7 @@
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "@vercel/ncc": "^0.36.1",
+    "eslint": "^8.48.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-standard": "^17.1.0",
     "gulp": "^4.0.2",

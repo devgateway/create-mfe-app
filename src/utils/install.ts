@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import spawn from 'cross-spawn';
 import { getOnline } from './online';
 
-export const installDependencies = async ({ root, dependencies }: { root: string, dependencies: string [] }) => {
+export const installDependencies = async ({ root, dependencies, devDependencies }: { root: string, dependencies?: string [], devDependencies?: string [] }) => {
     const npmArgs = ['install'];
     const isOnline = await getOnline();
     const command = 'npm';
@@ -10,6 +10,10 @@ export const installDependencies = async ({ root, dependencies }: { root: string
     return new Promise((resolve, reject) => {
         if (dependencies && dependencies.length > 0) {
             npmArgs.push(...dependencies);
+        }
+
+        if (devDependencies && devDependencies.length > 0) {
+            npmArgs.push(...devDependencies.map((dep) => `--save-dev ${dep}`));
         }
 
         if (!isOnline) {

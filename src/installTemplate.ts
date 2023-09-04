@@ -4,6 +4,7 @@ import path from 'path';
 import spawn from 'cross-spawn';
 import { AppType, Language } from './types';
 import { installDependencies } from './utils/install';
+import chalk from 'chalk';
 
 interface InstallTemplateOptions {
     template: string;
@@ -24,6 +25,13 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
     const copySrc = ['**'];
     const templateDir = path.join(__dirname, '../templates', template);
 
+    // check if template dir exists
+    if (!fs.existsSync(templateDir)) {
+        console.log(`\nTemplate ${template} does not exist. The CLI tool is still in development\n`);
+        chalk.red('Please come back later or contribute to the project at https://github.com/devgateway/create-mfe-app\n');
+        return;
+    }
+
     /**
      * Copy the template files from template to the target directory.
      */
@@ -37,6 +45,10 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
                 return '.gitignore';
             } if (name === 'README-template.md') {
                 return 'README.md';
+            } if (name === 'eslint.json') {
+                return '.eslintrc.json';
+            } if (name === 'eslintignore') {
+                return '.eslintignore';
             }
             return name;
         }
@@ -64,6 +76,7 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         scripts: {
             start: 'node scripts/start.js',
             build: `PUBLIC_URL=${publicPath || '/'} node scripts/build.js`,
+            lint: 'eslint . --ext .js,.jsx,.ts,.tsx',
             'lint:fix': 'eslint . --ext .js,.jsx,.ts,.tsx --fix'
         },
         browserslist
@@ -81,19 +94,48 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         'react',
         'react-dom',
         'react-scripts',
-        'web-vitals',
+        'web-vitals'
+    ];
+
+    const devDependencies = [
         '@babel/plugin-proposal-private-property-in-object'
     ];
+
+    if (language === Language.JavaScript) {
+        const jsDependencies = [
+            'eslint',
+            'eslint-config-standard',
+            'eslint-plugin-import',
+            'eslint-plugin-jsx-a11y',
+            'eslint-plugin-react',
+            'eslint-plugin-react-hooks',
+            'eslint-config-airbnb',
+            'babel-eslint'
+        ];
+
+        devDependencies.push(...jsDependencies);
+    }
 
     if (language === Language.TypeScript) {
         const tsDependencies = [
             '@types/jest',
             '@types/node',
             '@types/react',
-            '@types/react-dom'
+            '@types/react-dom',
+            'typescript',
+            'eslint',
+            'eslint-config-airbnb',
+            'eslint-config-standard',
+            'eslint-plugin-import',
+            'eslint-plugin-jsx-a11y',
+            'eslint-plugin-react',
+            'eslint-plugin-react-hooks',
+            'eslint-config-airbnb-typescript',
+            '@typescript-eslint/eslint-plugin',
+            '@typescript-eslint/parser'
         ];
 
-        dependencies.push(...tsDependencies);
+        devDependencies.push(...tsDependencies);
     }
 
     if (useReactRouter) {
@@ -104,7 +146,7 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
         dependencies.push(...routerDependencies);
     }
 
-    await installDependencies({ root, dependencies })
+    await installDependencies({ root, dependencies, devDependencies })
         .then(() => {
             console.log('\n✅ Dependencies installed');
             // lint the project
@@ -116,8 +158,11 @@ export const installTemplate = async (options: InstallTemplateOptions) => {
             );
 
             if (lint.status !== 0) {
-                console.log('Linting failed');
-                process.exit(1);
+                spawn.sync(
+                    'npm',
+                    ['init', '@eslint/config', '--yes'],
+                    { stdio: 'inherit' }
+                );
             }
 
             console.log('\n✅ Linting complete');
